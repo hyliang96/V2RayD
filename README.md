@@ -41,10 +41,15 @@ v2  [参数]
 参数：
 
 `v2`                 : 开启当前默认配置
+
 `v2 start <配置名>`  : 修改当前默认配置为<配置名>，并重启v2ray
+
 `v2 stop`            : 停止v2ray
+
 `v2 list`            : 查看所有配置
+
 `v2 status|log`      : 查看当前日志
+
 `v2 jch|ps`          : 查看当前v2ray进程
 
 ## ToDo
