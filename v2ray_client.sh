@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-v2ray_client_log='/Users/mac/Desktop/v2ray/log'
+v2ray_client_log='/usr/local/etc/v2ray'
 v2ray_command='v2ray'
 v2ray_config_dir='/usr/local/etc/v2ray'
 v2ray_http_port=1087
 
 
-#  翻墙代理设置，使得命令行下可以翻墙
+#  代理代理设置，使得命令行下可以代理
 # 国内网站不代理
 export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,.souche.com"
 # ss, ssr, v2ray: 对curl, w3m有效，对ping无效
@@ -22,16 +22,16 @@ fq()
         export http_proxy="http://127.0.0.1:$v2ray_http_port"
         export https_proxy="http://127.0.0.1:$v2ray_http_port"
         export ftp_proxy="http://127.0.0.1:$v2ray_http_port"
-        echo "终端开始翻墙"
+        echo "终端开始代理"
     elif [ "$1" = 'stop' ]; then
         unset http_proxy
         unset https_proxy
         unset ftp_proxy
-        echo "终端结束翻墙"
+        echo "终端结束代理"
     else
-        echo 'fq       : 终端开始翻墙'
-        echo 'fq start : 终端开始翻墙'
-        echo 'fq stop  : 终端结束翻墙'
+        echo 'fq       : 终端开始代理'
+        echo 'fq start : 终端开始代理'
+        echo 'fq stop  : 终端结束代理'
     fi
 }
 
@@ -93,7 +93,15 @@ v2()
         fi
 
 
-        # 关闭其他翻墙程序
+        # 关闭其他代理程序
+        # Under ~/Library/LaunchAgents is auto-launching process for 'ShadowsocksX-NG-R8' and 'V2RayU'.
+        # ShadowsocksX-NG-R8's sslocal and proxy will launch and take place of localhost:1080 and localhost:1087,
+        # so V2RayU's v2ray-core and this scipt's v2ray-core can't start up at this time.
+        # This script open  'ShadowsocksX-NG-R8.app' and exit it, in order to exit ShadowsocksX-NG-R8's sslocal,
+        # Once ShadowsocksX-NG-R8's sslocal exits, V2RayU's v2ray-core will strat up within 3 second,
+        # so this script needs to open V2RayU.app and exit it, in order to exit V2RayU's v2ray-core.
+        # After that, localhost:1080 and localhost:1087 is available, and this scipt's v2ray-core can strat up.
+
         if ! [ "`ps aux | grep -F 'ShadowsocksX-NG' | grep -v grep`" = '' ]; then
             local _user=`ps aux | grep -F 'ShadowsocksX-NG' | grep -v grep | awk 'NR==1{print}' | awk '{print $1}'`
             sudo su - $_user -c 'open -a  "ShadowsocksX-NG-R8"'
@@ -121,11 +129,11 @@ v2()
         ) & ) > $v2ray_client_log 2>&1
         echo "v2ray 已启动"
 
-        # 系统http，https翻墙，可使所有浏览器翻墙
+        # 系统http，https代理，可使所有浏览器代理
         sudo networksetup -setwebproxy 'Wi-Fi' 127.0.0.1 $v2ray_http_port
         sudo networksetup -setsecurewebproxy 'Wi-Fi' 127.0.0.1 $v2ray_http_port
         echo "系统http, https代理开启，设为'127.0.0.1 $v2ray_http_port'"
-        # 终端翻墙
+        # 终端代理
         fq
 
     elif [ "$1" = 'stop' ]; then
@@ -141,11 +149,11 @@ v2()
             echo "no process named: $v2ray_command"
         fi
 
-        # 系统http，https结束翻墙
+        # 系统http，https结束代理
         sudo networksetup -setwebproxystate 'Wi-Fi' off
         sudo networksetup -setsecurewebproxystate 'Wi-Fi' off
         echo "系统http, https代理关闭"
-        # 终端结束翻墙
+        # 终端结束代理
         fq stop
 
     elif [ "$1" = 'jch' ] || [ "$1" = 'ps' ]; then
