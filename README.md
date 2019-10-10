@@ -15,8 +15,25 @@
 安装v2ray-core
 
 ```bash
+brew tap v2ray/v2ray
 brew install v2ray-core
 ```
+
+升级v2ray-core
+
+```bash
+brew update
+brew upgrade v2ray-core
+```
+
+卸载v2ray-core
+
+```bash
+brew uninstall v2ray-core
+brew untap v2ray/v2ray
+```
+
+[brew管理v2ray参见](https://github.com/v2ray/homebrew-v2ray)
 
 配置文件在
 
@@ -86,4 +103,31 @@ https://support.apple.com/en-us/HT2420
 
 https://blog.csdn.net/github_35041937/article/details/52709098
 
-https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CustomLogin.html 
+https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CustomLogin.html
+
+
+
+### 开机自启方法
+
+https://github.com/v2ray/homebrew-v2ray
+
+once you installed, you can run command via v2ray to run v2ray-core.
+
+The defualt config file location is:/usr/local/etc/v2ray/config.json
+
+step 1: edit the default config:
+
+```bash
+vim /usr/local/etc/v2ray/config.json
+```
+
+step 2: run v2ray-core without starting at login.
+
+```bash
+brew services run v2ray-core
+```
+
+or run v2ray-core and register it to launch at login via:
+```bash
+brew services start v2ray-core
+```

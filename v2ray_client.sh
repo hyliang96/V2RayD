@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-v2ray_client_log='/usr/local/etc/v2ray'
+v2ray_client_log='/usr/local/etc/v2ray/log'
 v2ray_command='v2ray'
 v2ray_config_dir='/usr/local/etc/v2ray'
 v2ray_http_port=1087
+v2ray_socks_port=1080
 
 
 #  代理代理设置，使得命令行下可以代理
@@ -132,7 +133,8 @@ v2()
         # 系统http，https代理，可使所有浏览器代理
         sudo networksetup -setwebproxy 'Wi-Fi' 127.0.0.1 $v2ray_http_port
         sudo networksetup -setsecurewebproxy 'Wi-Fi' 127.0.0.1 $v2ray_http_port
-        echo "系统http, https代理开启，设为'127.0.0.1 $v2ray_http_port'"
+        sudo networksetup -setsocksfirewallproxy Wi-Fi 127.0.0.1 $v2ray_socks_port
+        echo "系统http, https, socks代理开启，设为'127.0.0.1 $v2ray_http_port'"
         # 终端代理
         fq
 
@@ -152,7 +154,9 @@ v2()
         # 系统http，https结束代理
         sudo networksetup -setwebproxystate 'Wi-Fi' off
         sudo networksetup -setsecurewebproxystate 'Wi-Fi' off
-        echo "系统http, https代理关闭"
+        sudo networksetup -setsocksfirewallproxystate 'Wi-Fi' off
+
+        echo "系统http, https, socks代理关闭"
         # 终端结束代理
         fq stop
 
