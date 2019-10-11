@@ -131,3 +131,15 @@ or run v2ray-core and register it to launch at login via:
 ```bash
 brew services start v2ray-core
 ```
+
+等多， [参见](https://www.jianshu.com/p/6c3b26490861)
+```bash
+brew services list  # 查看使用brew安装的服务列表
+brew services run formula|--all  # 启动服务（仅启动不注册开机自启）
+brew services start formula|--all  # 启动服务，并注册开机自启
+brew services stop formula|--all   # 停止服务，并取消注册开机自启
+brew services restart formula|--all  # 重启服务，并注册开机自启
+brew services cleanup  # 清除已卸载应用的无用的配置
+```
+
+
